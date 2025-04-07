@@ -1,0 +1,25 @@
+{
+  "name": "training_cypress_repo",
+  "version": "1.0.0",
+  "description": "For personal cypress test automation testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "login-test": "npx cypress run  --spec 'cypress/e2e/login.cy.js' --browser chrome" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaNaMee/Training_Cypress_Repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaNaMee/Training_Cypress_Repo/issues"
+  },
+  "homepage": "https://github.com/MaNaMee/Training_Cypress_Repo#readme",
+  "dependencies": {
+    "cypress": "^14.2.1"
+  }
+
+}
