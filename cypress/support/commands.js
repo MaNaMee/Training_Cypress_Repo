@@ -23,3 +23,11 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('auth', (username, password) => { // FUNCTION OR METHOD --> Then i-call natin sya sa spec or test file natin.
+    cy.visit('https://www.saucedemo.com/', {timeout: 240000})
+      cy.get('[data-test="username"]').type(username)
+      cy.get('[data-test="password"]').type(password)
+      cy.get('[data-test="login-button"]').click()
+}); // Try to create other Commands - pwedeng yung add to cart at checkout is gagawan natin ng commands
+ 

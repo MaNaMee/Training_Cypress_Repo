@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "login-test": "npx cypress run  --spec 'cypress/e2e/login.cy.js' --browser chrome" 
+    "login-test": "npx cypress run  --record --key 86c44907-cfd3-48bb-b704-7be82ca63df9 --spec 'cypress/e2e/login.cy.js' --browser chrome"
+    
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,8 @@
   "homepage": "https://github.com/MaNaMee/Training_Cypress_Repo#readme",
   "dependencies": {
     "cypress": "^14.2.1"
+  },
+  "devDependencies": {
+    "cypress-mochawesome-reporter": "^3.8.2"
   }
-
 }
