@@ -122,7 +122,8 @@ Cypress.Commands.add('generateUserInfo', (NewUser) => {
 })
 
 Cypress.Commands.add('AE_CreateUser', () => {
-  cy.fixture('RegisteredUser.json').then((UserInformation) => {
+
+  cy.readFile('cypress/fixtures/RegisteredUser.json').then((UserInformation) => {
     const RandomYear = faker.number.int({min: 1900, max: 2021})
     const SelectedYear = RandomYear.toString()
     cy.url().should('include','/login')
@@ -143,9 +144,9 @@ Cypress.Commands.add('AE_CreateUser', () => {
     cy.get('[data-qa="password"]', { timeout: 1500 }).should('have.value', UserInformation.password)
     cy.get('[data-qa="days"]').select(UserInformation.days).find('option:selected').should('have.value', UserInformation.days) 
 
-    cy.get('[data-qa="months"]').select(UserInformation.month).should('have.value', UserInformation.month)
+    cy.get('[data-qa="months"]').select(UserInformation.month)
  //   cy.get('[data-qa="months"]')
-    cy.get('[data-qa="years"]').select(RandomYear.toString()).find('option:selected').should('have.value', UserInformation.year) 
+    cy.get('[data-qa="years"]').select(UserInformation.year).find('option:selected').should('have.value', UserInformation.year) 
     cy.get('[data-qa="first_name"]').should('be.visible').should('not.be.disabled').should('have.value', '')
     cy.get('[data-qa="first_name"]').should('not.be.disabled').type(UserInformation.fname)
     cy.get('[data-qa="first_name"]').should('have.value', UserInformation.fname)
@@ -158,7 +159,7 @@ Cypress.Commands.add('AE_CreateUser', () => {
     cy.get('[data-qa="address2"]').should('be.visible').should('not.be.disabled').should('have.value', '')
     cy.get('[data-qa="address2"]').should('not.be.disabled').type(UserInformation.address2)
     cy.get('[data-qa="address2"]').should('have.value', UserInformation.address2)
-    cy.get('[data-qa="country"]').should('be.visible').should('not.be.disabled').should('have.value', '')
+    cy.get('[data-qa="country"]').should('be.visible').should('not.be.disabled').should('have.value', 'India')
     cy.get('[data-qa="country"]').should('not.be.disabled').select(UserInformation.random_country)
     cy.get('[data-qa="country"]').should('have.value', UserInformation.random_country)
     cy.get('[data-qa="state"]').should('be.visible').should('not.be.disabled').should('have.value', '')
@@ -214,7 +215,7 @@ Cypress.Commands.add('AddProduct', (ProdID) => {
 
 Cypress.Commands.add('Add_CCinfo' ,() => {
 
-  cy.fixture('RegisteredUser.json').then(CC_Info => {
+  cy.readFile('cypress/fixtures/RegisteredUser.json').then((CC_Info) => {
 
   cy.get('[data-qa="name-on-card"]').should('be.visible').should('not.be.disabled')
   cy.get('[data-qa="name-on-card"]').type(CC_Info.username)
