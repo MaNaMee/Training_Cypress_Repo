@@ -27,7 +27,6 @@
 import 'cypress-xpath';
 import { faker } from '@faker-js/faker';
 import { generateCustomerInformation } from './utils';
-import { faker } from '@faker-js/faker';
 import { generateCustomerInformation } from './utils';
 
 Cypress.Commands.add('auth', (username, password) => { // FUNCTION OR METHOD FOR USER LOGIN
