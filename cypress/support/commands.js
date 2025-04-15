@@ -252,7 +252,7 @@ Cypress.Commands.add('Delete_Account', () => {
 
 Cypress.Commands.add('AE_Login', () => {
   cy.url().should('include', '/login')
-  cy.fixture('RegisteredUser.json').then(LoginCreds => {
+  cy.readFile('cypress/fixtures/RegisteredUser.json').then(LoginCreds => {
     cy.get('[data-qa="login-email"]').should('be.visible').should('not.be.disabled')
     cy.get('[data-qa="login-email"]').type(LoginCreds.email)
     cy.get('[data-qa="login-password"]').should('be.visible').and('not.be.disabled')
