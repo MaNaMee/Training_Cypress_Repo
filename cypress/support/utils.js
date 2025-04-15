@@ -28,7 +28,6 @@ export function generateCustomerInformation(){
     const country = faker.helpers.arrayElement(allowedCountries);
     const RandomYear = faker.number.int({min: 1900, max: 2021})
     const expiryDate = faker.date.future()
-    
     return {
      username : faker.person.fullName(),
      email: faker.internet.email(),
@@ -39,8 +38,6 @@ export function generateCustomerInformation(){
      address2 : faker.location.secondaryAddress(),
      days: faker.number.int({ min:1, max: 31}),
      month : faker.date.month(),
-     //month: faker.number.int({ min:1, max: 12}),
-     //month_int: faker.number.int({ min:1, max: 12}),
      year : RandomYear.toString(),
      random_country : country,
      state : faker.location.state(),
