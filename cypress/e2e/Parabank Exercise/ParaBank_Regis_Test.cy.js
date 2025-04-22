@@ -1,4 +1,5 @@
-import { generateCustomerData } from "../support/utils"
+import { generateCustomerData } from "../../support/utils"
+import RegistrationPage from    
 
 describe('Parabank User Registration', () => {
     before(() => {
@@ -90,34 +91,11 @@ describe('Parabank User Registration with Fixtures and Faker.js', () => {
         const NewUser = generateCustomerData()
         cy.generateFixtureData(NewUser)
 
-        cy.fixture('UserCredentials.json').then((UserCredentials) => {
-            cy.url().should('include','register.htm')  
-            cy.get('.title').should('be.visible')
-            cy.contains('First Name').should('be.visible')    
-            cy.get('input[id="customer.firstName"]').should('be.visible').type(UserCredentials.firstName)
-            cy.contains('Last Name').should('be.visible')
-            cy.get('input[id="customer.lastName"]').should('be.visible').type(UserCredentials.lastName)
-            cy.contains('Address').should('be.visible')
-            cy.get('input[id="customer.address.street"]').should('be.visible').type(UserCredentials.address)
-            cy.contains('City').should('be.visible')
-            cy.get('input[id="customer.address.city"]').should('be.visible').type(UserCredentials.city)
-            cy.contains('State').should('be.visible')
-            cy.get('input[id="customer.address.state"]').should('be.visible').type(UserCredentials.state)
-            cy.contains('Zip Code').should('be.visible')
-            cy.get('input[id="customer.address.zipCode"]').should('be.visible').type(UserCredentials.zipCode)
-            cy.contains('Phone #').should('be.visible')
-            cy.get('input[id="customer.phoneNumber"]').should('be.visible').type(UserCredentials.phoneNumber)
-            cy.contains('SSN').should('be.visible')
-            cy.get('input[id="customer.ssn"]').should('be.visible').type(UserCredentials.firstName)
-            cy.contains('Username:').should('be.visible')
-            cy.get('input[id="customer.username"]').should('be.visible').type(UserCredentials.username)
-            cy.contains('Password').should('be.visible')
-            cy.get('input[id="customer.password"]').should('be.visible').type(UserCredentials.password)
-            cy.contains('Confirm').should('be.visible')
-            cy.get('input[id="repeatedPassword"]').should('be.visible').type(UserCredentials.password)
+        cy.readFile('cypress/fixtures/UserCredentials.json').then((UserCredentials) => {
+            RegistrationPage.fillSignUpForm(UserCredentials)
+            RegistrationPage.submitSignUpForm()
+            RegistrationPage.verifySignUpSuccess(UserCredentials.username)
         })
-
-        cy.get('[colspan="2"] > .button').should('be.visible').click()
     })
     
 

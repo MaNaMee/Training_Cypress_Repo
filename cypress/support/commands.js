@@ -26,6 +26,12 @@
 
 import 'cypress-xpath';
 import { faker } from '@faker-js/faker';
+import SignupForm from "../support/pages/signup.pages";
+import AE_RegistrationPage from "../support/pages/AE_Register.page"
+import CCPage from './pages/CC.page';
+import CheckoutPage from './pages/Checkout.page';
+import CartPage from './pages/Cart.page';
+import registrationPage from './pages/registration.page';
 
 
 Cypress.Commands.add('auth', (username, password) => { // FUNCTION OR METHOD FOR USER LOGIN
@@ -126,72 +132,44 @@ Cypress.Commands.add('AE_CreateUser', () => {
   cy.readFile('cypress/fixtures/RegisteredUser.json').then((UserInformation) => {
     const RandomYear = faker.number.int({min: 1900, max: 2021})
     const SelectedYear = RandomYear.toString()
-    cy.url().should('include','/login')
-    cy.get('[data-qa="signup-name"]').should('be.visible').should('not.be.disabled').and('have.value', '')
-    cy.get('[data-qa="signup-name"]').should('be.visible').type(UserInformation.username)
-    cy.get('[data-qa="signup-name"]', { timeout: 1500 }).should('have.value', UserInformation.username)
-    cy.get('[data-qa="signup-email"]').should('be.visible').should('not.be.disabled').and('have.value', '')
-    // cy.get('[data-qa="signup-email"]').should('be.visible').type(UserInformation.email)
-    cy.get('[data-qa="signup-email"]').should('be.visible').type(UserInformation.email)
-    cy.get('[data-qa="signup-email"]', { timeout: 1500 }).should('have.value', UserInformation.email)
-    cy.get('[data-qa="signup-button"]').should('contain', 'Signup').should('not.be.disabled').click()
-  
-    //Account Creation
-    cy.get(':nth-child(3) > .top').should('not.be.disabled').click() // Mr/Ms Radio button
-    // cy.get(':nth-child(3) > .top').should('be.checked')
-    cy.get('[data-qa="password"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="password"]').type(UserInformation.password)
-    cy.get('[data-qa="password"]', { timeout: 1500 }).should('have.value', UserInformation.password)
-    cy.get('[data-qa="days"]').select(UserInformation.days).find('option:selected').should('have.value', UserInformation.days) 
 
-    cy.get('[data-qa="months"]').select(UserInformation.month)
- //   cy.get('[data-qa="months"]')
-    cy.get('[data-qa="years"]').select(UserInformation.year).find('option:selected').should('have.value', UserInformation.year) 
-    cy.get('[data-qa="first_name"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="first_name"]').should('not.be.disabled').type(UserInformation.fname)
-    cy.get('[data-qa="first_name"]').should('have.value', UserInformation.fname)
-    cy.get('[data-qa="last_name"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="last_name"]').should('not.be.disabled').type(UserInformation.lname)
-    cy.get('[data-qa="last_name"]').should('have.value', UserInformation.lname)
-    cy.get('[data-qa="address"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="address"]').should('not.be.disabled').type(UserInformation.address)
-    cy.get('[data-qa="address"]').should('have.value', UserInformation.address)
-    cy.get('[data-qa="address2"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="address2"]').should('not.be.disabled').type(UserInformation.address2)
-    cy.get('[data-qa="address2"]').should('have.value', UserInformation.address2)
-    cy.get('[data-qa="country"]').should('be.visible').should('not.be.disabled').should('have.value', 'India')
-    cy.get('[data-qa="country"]').should('not.be.disabled').select(UserInformation.random_country)
-    cy.get('[data-qa="country"]').should('have.value', UserInformation.random_country)
-    cy.get('[data-qa="state"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="state"]').should('not.be.disabled').type(UserInformation.state)
-    cy.get('[data-qa="state"]').should('have.value', UserInformation.state)
-    cy.get('[data-qa="city"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="city"]').should('not.be.disabled').type(UserInformation.city)
-    cy.get('[data-qa="city"]').should('have.value', UserInformation.city)
-    cy.get('[data-qa="zipcode"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="zipcode"]').should('not.be.disabled').type(UserInformation.zipcode)
-    cy.get('[data-qa="zipcode"]').should('have.value', UserInformation.zipcode)
-    cy.get('[data-qa="mobile_number"]').should('be.visible').should('not.be.disabled').should('have.value', '')
-    cy.get('[data-qa="mobile_number"]').should('not.be.disabled').type(UserInformation.mobile_number)
-    cy.get('[data-qa="mobile_number"]').should('have.value', UserInformation.mobile_number)
-    cy.get('[data-qa="create-account"]').should('contain', 'Create Account').should('not.be.disabled').should('be.visible').click()
+    //Initial Signup Form
+    cy.get('.shop-menu > .nav > :nth-child(4) > a').should('contain','Signup / Login').and('be.visible').click()
+    cy.url().should('include','/login')
+    SignupForm.fillSignUpForm(UserInformation)
+    SignupForm.checkUsernameField(UserInformation.username)
+    SignupForm.checkEmailField(UserInformation.email)
+    SignupForm.submitSignUpForm()
+    
+    //Account Creation
+    AE_RegistrationPage.fillSignUpForm(UserInformation)
+    AE_RegistrationPage.checkNamefield(UserInformation.username)
+    AE_RegistrationPage.checkEmailField(UserInformation.email)
+    AE_RegistrationPage.checkPasswordField(UserInformation.password)
+    AE_RegistrationPage.checkDOBFields(UserInformation.days, UserInformation.year)
+    AE_RegistrationPage.checkFnameField(UserInformation.fname)
+    AE_RegistrationPage.checkLnameField(UserInformation.lname)
+    AE_RegistrationPage.checkAddressField(UserInformation.address)
+    AE_RegistrationPage.checkAddress2Field(UserInformation.address2)
+    AE_RegistrationPage.checkCountryField(UserInformation.random_country)
+    AE_RegistrationPage.checkStateField(UserInformation.state)
+    AE_RegistrationPage.checkCityField(UserInformation.city)
+    AE_RegistrationPage.checkZIPField(UserInformation.zipcode)
+    AE_RegistrationPage.checkNumField(UserInformation.mobile_number)
+    AE_RegistrationPage.submitRegForm()
+    AE_RegistrationPage.assertAccountCreation()
+    AE_RegistrationPage.verifyLogInSuccess()
   })
 })
 
-Cypress.Commands.add('Verify_Delivery_Invoice', (type, RegisteredUser) => {
-  
-    cy.get(`#address_${type} > .address_firstname`)
-        .should('contain', ` ${RegisteredUser.fname} ${RegisteredUser.lname}`);
-   
-    cy.get(`#address_${type} > :nth-child(4)`).should('contain', RegisteredUser.address);
-    cy.get(`#address_${type} > :nth-child(5)`).should('contain', RegisteredUser.address2);
-
-    cy.get(`#address_${type} > .address_city`).should('contain', RegisteredUser.city);
-    cy.get(`#address_${type} > .address_state_name`).should('contain', RegisteredUser.state);
-    cy.get(`#address_${type} > .address_postcode`).should('contain', RegisteredUser.zipcode);
-
-    cy.get(`#address_${type} > .address_country_name`).should('contain', RegisteredUser.random_country);
-    cy.get(`#address_${type} > .address_phone`).should('contain', RegisteredUser.mobile_number);
+Cypress.Commands.add('AE_Checkout', (testcasenumber) => {
+  cy.readFile('cypress/fixtures/RegisteredUser.json').then((RegUser) => {
+      CheckoutPage.assertDeliveryInvoice('delivery', RegUser)
+      CheckoutPage.assertDeliveryInvoice('invoice', RegUser)
+  })
+  CheckoutPage.checkAnyProductInCart()
+  CheckoutPage.writeComment(testcasenumber)
+  CheckoutPage.placeOrder()
 })
 
 Cypress.Commands.add('AddProduct', (ProdID) => {
@@ -214,26 +192,15 @@ Cypress.Commands.add('AddProduct', (ProdID) => {
 })
 
 Cypress.Commands.add('Add_CCinfo' ,() => {
-
   cy.readFile('cypress/fixtures/RegisteredUser.json').then((CC_Info) => {
-
-  cy.get('[data-qa="name-on-card"]').should('be.visible').should('not.be.disabled')
-  cy.get('[data-qa="name-on-card"]').type(CC_Info.username)
-  cy.get('[data-qa="card-number"]').should('be.visible').should('not.be.disabled')
-  cy.get('[data-qa="card-number"]').type(CC_Info.cc_number)
-  cy.get('[data-qa="cvc"]').should('be.visible').should('not.be.disabled')
-  cy.get('[data-qa="cvc"]').type(CC_Info.cc_cvv)
-  cy.get('[data-qa="expiry-month"]').should('be.visible').should('not.be.disabled')
-  cy.get('[data-qa="expiry-month"]').type(CC_Info.cc_exp_month)
-  cy.get('[data-qa="expiry-year"]').should('be.visible').should('not.be.disabled')
-  cy.get('[data-qa="expiry-year"]').type(CC_Info.cc_exp_year)
-  cy.get('[data-qa="pay-button"]').should('be.visible').and('contain','Pay and Confirm Order')
-  cy.get('[data-qa="pay-button"]').click() 
-
-  cy.get('[data-qa="order-placed"] > b').should('contain','Order Placed!').should('be.visible')
-  cy.get('.col-sm-9 > p').should('contain','Congratulations! Your order has been confirmed!').should('be.visible')
-  cy.get('[data-qa="continue-button"]').should('be.visible').should('not.be.disabled').and('contain', 'Continue')
-  cy.get('[data-qa="continue-button"]').click()
+    CCPage.fillCCForm(CC_Info)
+    CCPage.checkCCName(CC_Info.username)
+    CCPage.checkCCNumber(CC_Info.cc_number)
+    CCPage.checkCC_CVV(CC_Info.cc_cvv)
+    CCPage.checkCCMonth(CC_Info.cc_exp_month)
+    CCPage.checkCCYear(CC_Info.cc_exp_year)
+    CCPage.submitCCForm()
+    CCPage.assertOrderConfirmation()
   })
 })
 
@@ -251,15 +218,28 @@ Cypress.Commands.add('Delete_Account', () => {
 
 
 Cypress.Commands.add('AE_Login', () => {
+  cy.get('.shop-menu > .nav > :nth-child(4) > a').should('contain','Signup / Login').and('be.visible').click()
   cy.url().should('include', '/login')
   cy.readFile('cypress/fixtures/RegisteredUser.json').then(LoginCreds => {
-    cy.get('[data-qa="login-email"]').should('be.visible').should('not.be.disabled')
-    cy.get('[data-qa="login-email"]').type(LoginCreds.email)
-    cy.get('[data-qa="login-password"]').should('be.visible').and('not.be.disabled')
-    cy.get('[data-qa="login-password"]').type(LoginCreds.password)
-    cy.get('[data-qa="login-button"]').should('be.visible').should('contain', 'Login').and('not.be.disabled')
-    cy.get('[data-qa="login-button"]').click()
-    cy.get(':nth-child(10) > a').should('contain', `Logged in as ${LoginCreds.username}`)
+    // cy.get('[data-qa="login-email"]').should('be.visible').should('not.be.disabled')
+    // cy.get('[data-qa="login-email"]').type(LoginCreds.email)
+    // cy.get('[data-qa="login-password"]').should('be.visible').and('not.be.disabled')
+    // cy.get('[data-qa="login-password"]').type(LoginCreds.password)
+    // cy.get('[data-qa="login-button"]').should('be.visible').should('contain', 'Login').and('not.be.disabled')
+    // cy.get('[data-qa="login-button"]').click()
+    // cy.get(':nth-child(10) > a').should('contain', `Logged in as ${LoginCreds.username}`)
+
+    SignupForm.loginUser(LoginCreds)
+    SignupForm.checkLoginEmailField(LoginCreds.email)
+    SignupForm.checkLoginPwordField(LoginCreds.password)
+    SignupForm.submitLoginDetails()
   })
 
 } )
+
+Cypress.Commands.add('AE_Cart', () => {
+  CartPage.navigateToCart()
+  CartPage.verifyCartPage()
+  CartPage.checkAnyProductInCart()
+  CartPage.proceedToCheckout()
+})
