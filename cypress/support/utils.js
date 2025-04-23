@@ -52,3 +52,12 @@ export function generateCustomerInformation(){
     };
 
 }
+
+export function generateLocalAPIInformation() {
+  return{
+    Username: faker.person.fullName(),
+    email: faker.internet.email(),
+    password: faker.internet.password()
+  }
+  
+}

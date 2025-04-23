@@ -127,6 +127,10 @@ Cypress.Commands.add('generateUserInfo', (NewUser) => {
   cy.writeFile('cypress/fixtures/RegisteredUser.json', NewUser);
 })
 
+Cypress.Commands.add('generateLocalAPIFile', (NewLocalUser) => {
+  cy.writeFile('cypress/fixtures/LocalUser.json', NewLocalUser)
+})
+
 Cypress.Commands.add('AE_CreateUser', () => {
 
   cy.readFile('cypress/fixtures/RegisteredUser.json').then((UserInformation) => {
